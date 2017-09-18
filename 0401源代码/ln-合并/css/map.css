@@ -1,0 +1,20 @@
+.map-container{
+	margin:auto;
+	width: 800px;
+	height: 780px;
+}
+
+.map-player{
+	position: absolute;
+	top: 170px;
+	width: 1640px;
+	height: 860px;
+}
+
+.map-player .map-item{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1640px;
+	height: 860px;
+}

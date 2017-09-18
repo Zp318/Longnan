@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/echarts.js"></script>
+	<script type="text/javascript" src="../../js/echarts-gl.js"></script>
+	<script type="text/javascript" src="../../js/d3.js"></script>
+	<script type="text/javascript" src="../../assets/esl.js"></script>
+	<script type="text/javascript">
+		require.config({
+            packages: [
+                {
+                    name: 'zrender',
+                    location: '../../assets/zr',
+                    main: 'zrender'
+                }
+            ]
+        });
+	</script>
+</head>
+<body>
+	
+    <div id="map1" style="width: 800px;height: 800px;border:1px solid black;position: absolute;left: 0;top: 0"></div>
+
+    <div id="map2" style="width: 800px;height: 800px;border:1px solid black;position: absolute;left: 0;top: 0"></div>
+</body>
+
+<script type="text/javascript">
+	 
+	 (function() {
+	 	var width = 800, height = 800;
+
+	 	require.config({
+            packages: [
+                {
+                    name: 'zrender',
+                    location: '../../assets/zr',
+                    main: 'zrender'
+                }
+            ]
+        });
+
+	 	$.get("../../json/621200.json").done(function (longnan) {
+			 
+			echarts.registerMap("ln",(typeof longnan == "string" ? $.parseJSON(longnan):longnan));
+
+			var chart = echarts.init($("#map1").get(0));
+
+			var unitPoint = [0.0032010497192374032, 0.0032010497192374032];
+
+			var margin = [50,50,50,50];// left top right bottom
+
+			var options = {
+				geo:{
+			    	left: 0, top: 0, right: 0, bottom: 0,
+			    	boundingCoords: [
+					    [104.02085527656433 + (-margin[0]) * unitPoint[0], 34.533843703256665 + (+margin[1]) * unitPoint[1]],  
+					    [106.58169505195161 + (+margin[3]) * unitPoint[0], 32.46028246681772 + (-margin[2]) * unitPoint[1]]
+					]
+			    }
+			};
+
+			chart.setOption(options);
+
+			require(["zrender","zrender/shape/Polygon","zrender/Group"],function(zrender,Polygon,Group) {
+				
+				var zr = zrender.init(document.getElementById("map2"))
+
+				var lnGeoJson = echarts.getMap("ln").geoJson;
+
+				var shape1 = addMapShape(zr, lnGeoJson, {
+					color :"#2195cc",
+                	offset:[20,20]
+				});
+                var shape2 = addMapShape(zr, lnGeoJson, {
+                	color :"red"
+                });
+
+                /*zr.modGroup(shape2.id,{
+                	position:[-20,-20]
+                });*/
+
+				zr.render();
+
+
+
+				function addMapShape(zr , geoJson , styles ){
+						
+					var feature ,pointList,coord;
+					var g = new Group();
+
+					for(var i = 0 ; i < geoJson.features.length ; i ++){
+
+						feature = geoJson.features[i];
+						pointList = [];
+
+						for(var j = 0 ; j < feature.geometry.coordinates.length; j++){
+							
+							for(var k = 0 ; k <  feature.geometry.coordinates[j][0].length ; k ++){
+								coord = feature.geometry.coordinates[j][0][k];
+								pointList.push(getPx(coord[0],coord[1]));
+							}
+
+						}
+						g.addChild(new Polygon({
+							style : {
+					            pointList:pointList,
+					            color : styles.color || '#f5255f'
+					        }
+						}));
+					}
+
+					zr.addGroup(g);
+
+					return g 
+
+
+				}
+
+				function getUnitPoint() {
+					var first = getPoint(0,0);
+					var secont = getPoint(1,1);
+					return [secont[0] - first[0],secont[0] - first[0]]
+				}
+
+				function getPoint(x,y){
+					return chart.convertFromPixel("geo",[x,y]);
+				}
+
+				function getPx(x,y) {
+					return chart.convertToPixel("geo",[x,y]);
+				}
+
+			});
+
+
+			
+
+	 	});
+
+	 })();
+
+</script>
+</html>

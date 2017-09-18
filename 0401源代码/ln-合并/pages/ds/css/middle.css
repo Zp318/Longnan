@@ -1,0 +1,13 @@
+@font-face {
+    font-family: BGO;
+ 	src: url('../font/AgencyFB.eot');
+ 	src:
+     	url('../font/AgencyFB.eot?#iefix') format('embedded-opentype'),
+     	url('../font/AgencyFB.woff') format('woff'),
+     	url('../font/AgencyFB.ttf') format('truetype'),
+     	url('../font/AgencyFB.otf') format('otf'),
+     	url('../font/AgencyFB.svg') format('svg');
+   	font-weight: normal;
+   	font-style: normal;
+}
+

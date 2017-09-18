@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/left.css">
+		<link rel="stylesheet" type="text/css" href="../../css/map.css">
+		<link rel="stylesheet" type="text/css" href="./cy.css">
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				font-family: "Microsoft YaHei" ;
+			}
+		</style>
+		<script type="text/javascript" src="../../js/jquery.js"></script>
+		<script type="text/javascript" src="../../js/echarts.js"></script>
+		<script type="text/javascript" src="../../js/echarts-gl.js"></script>
+		<script type="text/javascript" src="../../js/d3.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../assets/esl.js"></script>
+
+		<script type="text/javascript">
+			require.config({
+                packages: [
+                    {
+                        name: 'zrender',
+                        location: '../../assets/zr',
+                        main: 'zrender'
+                    }
+                ]
+            });
+		</script>
+		<script type="text/javascript" src="./cy.js"></script>
+
+		<script type="text/javascript">
+			window.onload = function(){
+				var image = new Image();
+				image.onload = function(){
+					$('.container').css('background', 'url("' + image.src + '") no-repeat')
+						.css('visibility', 'visible');
+				};
+				image.src = './imgs/bg.jpg';
+				//绘制呼吸点
+				var chart = echarts.init($('#rippleBg')[0]);
+
+				var option = {
+					grid : {
+						left : 0,
+						top  : 0,
+						right : 0,
+						bottom : 0
+					},
+				    xAxis: {
+				    	show:false,
+				        splitLine: {
+				        	show : false
+				        },
+				        min : 0,
+				        max : 200
+				    },
+				    yAxis: {
+				    	show:false,
+				        splitLine: {
+				        	show : false,
+				        },
+				        scale: true,
+				        min : 0,
+				        max : 200		
+				    },
+				    series: [
+				    	{
+				            name: '',
+				            type: 'effectScatter',
+				            coordinateSystem: 'cartesian2d',
+				            data: [{
+				            	name:"",
+				            	value:[100, 100]
+				            }],
+				            symbolSize: 70,
+				            showEffectOn: 'render',
+				            rippleEffect: {
+				                brushType: 'stroke',
+				                scale:15
+				            },
+				            label: {
+				                normal: {  
+				                    show: false
+				                }
+				            },
+				            itemStyle: {
+				                normal: {
+				                    color: '#4084a7',
+				                    shadowBlur: 10,
+				                    shadowColor: '#4084a7'
+				                }
+				            },
+				            zlevel: 1
+				        }
+			        ]
+				};
+
+				chart.setOption(option);
+			};
+		</script>
+
+	</head>
+<body>
+	<div class="container cy">
+		<div class="ctan lt-ctan">
+			<div class="left-container">
+				<ul class="nav-btn lt-nav"></ul>
+		 		<div style="height: 320px;width: 1260px;">
+					<div style="float: left;width: 470px;height: 100%;">
+						<div class="plate line1">
+							<div class="plate-title"><span>三大产业</span></div>
+							<div style="height: 275px; width: 100%; position: relative;">
+								<div id="rk" style="width: 100%; height: 100%; position: absolute;left: 0;top: 0;"></div>
+							</div>
+						</div>
+					</div>
+
+					<div style="float: left;width: 785px;height: 100%;">
+						<div class="plate line1">
+							<div class="plate-title"><span>市级以上农业产业化重点龙头企业描述</span></div>
+							<div style="height: 275px; width: 100%; position: relative;">
+								
+								<div id="sc" style="width: 100%; height: 100%; position: absolute;left: 0;top: 0;"></div>
+							</div>
+						</div>
+					</div>
+		 		</div>
+		 		<div style="height: 330px;width: 1260px;">
+					<div style="float: left;width: 100%;height: 100%;">
+						<div class="plate line2 qy">
+							<div class="plate-title"><span>新增企业</span></div>
+							<div class="plate-content"  style="width: 35%;float: left;height: 290px">
+								<ul>
+									<li>
+										<div>2016年新增企业</div>
+										<div><span  style="font-size: 28px;color: #42d6e5;">3198</span>个</div>
+									</li>
+									<li>
+										<div>新增规上工业企业</div>
+										<div><span  style="font-size: 28px;color: #ffa800;">219</span>个</div>
+									</li>
+									<li>
+										<div>新培育小微企业</div>
+										<div><span  style="font-size: 28px;color: #50fba1;">1498</span>个</div>
+									</li>
+								</ul>
+								<div style="height: 220px; width: 100%; position: relative;">
+									<div style="height: 220px; width: 100%; position: relative;">
+									    <div id="qy_pie" style="width: 100%;height: 100%;float: left;"></div>
+									</div>
+								</div>								
+							</div>
+							<div id="qy_bar" style="width: 65%;height: 290px;float: left;"></div>
+							
+						</div>
+					</div>
+		 		</div>
+
+		 		<div style="height: 110px;width: 1260px;">
+					<div style="float: left;width: 470px;height: 100%;">
+						<div class="plate line2">
+							<div class="plate-title"><span>规模以上工业</span></div>
+							<div style="height: 290px; width: 100%; position: relative;" id="gmgy">
+							     
+							</div>
+						</div>
+					</div>
+					<div style="float: left;width: 780px;height: 100%;">
+						<div class="plate line2">
+							<div class="plate-title" style="text-indent: -10px;"><span>主要经济指标发展趋势</span></div>
+							
+							<div style="height: 280px; width: 100%; position: relative;">
+								<div id="jjfzqs" style="width: 100%; height: 100%; position: absolute;left: 0;top: 0;"></div>
+							</div>
+						</div>
+					</div>
+		 		</div>
+		 		<div id="cz" style="height: 260px; width: 985px;"></div>
+		 	</div>
+		</div>
+		<div class="ctan md-ctan">
+			<div style="width: 100%; height: 100%; position: absolute;left: 0;top: 0;z-index: 2">
+				<div id="baseMap" style="overflow: hidden;height: 70% ;width: 800px;margin:auto;margin-top: 13%;">
+					
+				</div>
+				<div id="productsArea" style="position:absolute;left:50%;top:0;margin-top:13%;margin-left:-400px;overflow: hidden;height: 70% ;width: 800px;">
+				</div>
+				<div id="productsAreaReport" style="position:absolute;left:50%;top:0;margin-top:13%;margin-left:-600px;overflow: hidden;height: 70% ;width: 1200px;">
+				</div>
+				<div class="footer-nav">
+		 			<div class="nav-list">
+		 				<div class="std">
+		 					<a href='../../index.html'>概览</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>扶贫攻坚</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>生态文明</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="#">产业培育</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>城乡一体</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>硬件实施</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>民生</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>执政</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="../ds/index.html">电子商务</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>金融</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="../ly/index.html">旅游</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>人大政协</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>党群建设</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>安全生产</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>文化建设</a>
+		 				</div>
+		 			</div>
+		 		</div>
+		 		<div class="mid-top">
+		 			<div class="top-container">
+		 				 <ul class="year-line">
+		 				 	<!-- <li class='year'>2012</li>
+		 				 	<li class="line"></li>
+		 				 	<li class="year">2013</li>
+		 				 	<li class="line"></li>
+		 				 	<li class="year">2014</li>
+		 				 	<li class="line"></li>
+		 				 	<li class="year">2015</li>
+		 				 	<li class="line"></li>
+		 				 	<li class="year">2016</li>
+		 				 	<li class="line"></li>
+		 				 	<li class="year">2017</li> -->
+
+		 				 	<li>
+		 				 		<div class="line lineStart"></div>
+		 				 		<div class="year">2012</div>
+		 				 		<div class="line"></div>
+		 				 	</li>
+		 				 	<li>
+		 				 		<div class="line"></div>
+		 				 		<div class="year">2013</div>
+		 				 		<div class="line"></div>
+		 				 	</li>
+		 				 	<li>
+		 				 		<div class="line"></div>
+		 				 		<div class="year">2014</div>
+		 				 		<div class="line"></div>
+		 				 	</li>
+		 				 	<li>
+		 				 		<div class="line"></div>
+		 				 		<div class="year">2015</div>
+		 				 		<div class="line"></div>
+		 				 	</li>
+		 				 	<li>
+		 				 		<div class="line"></div>
+		 				 		<div class="year">2016</div>
+		 				 		<div class="line"></div>
+		 				 	</li>
+		 				 	<li>
+		 				 		<div class="line"></div>
+		 				 		<div class="year">2017</div>
+		 				 		<div class="line lineEnd"></div>
+		 				 	</li>
+		 				 </ul>
+		 			</div>
+		 		</div>
+			</div>
+			<div id="rippleBg" style="width: 100%; height: 100%; position: absolute;left: 0;top: 0;z-index: 1"></div>
+		</div>
+		<div class="ctan rt-ctan">
+			 <div class="right-container">
+			 		<div style="height: 300px;width: 1166px;">	
+		 				<div style="float: left;width: 380px;height: 85%">
+		 					<div class="plate">
+			 					<div class="plate-title"><span>特色农业总产值</span></div>
+			 					<div class="plate-content" id="right-reportForm-1">
+			 						<div class="report-container">
+				 						 <div class="report" id="report1" style="width: 100%;height: 100%;">
+				 						 	
+				 						 </div>
+			 						</div>
+			 					</div>
+			 				</div>
+		 				</div>
+		 				<div style="float: left;width: 785px;height: 85%">
+		 					<div class="plate">
+			 					<div class="plate-title"><span>特色农产品</span></div>
+			 					<div class="plate-content" id="right-reportForm-2">
+			 						<div class="report-container">
+				 						 <div class="report" style="width: 100%;height: 235px;">
+				 						 	<div id="report2" style="width: 50%;float: left;height: 100%"></div>
+				 						 	<div id="report3" style="width: 50%;float: left;height: 100%"></div>
+				 						 </div>
+			 						</div>
+			 					</div>
+			 				</div>
+		 				</div>
+			 		</div>
+			 		<div style="height: 340px;width: 1166px;">
+
+			 				<div style="float: left;width: 100%;height: 100%;">
+			 					
+			 					<div class="plate">
+				 					<div class="plate-title"><span>全年粮食种植面积</span><span class="subTitle">(截止2017.04)</span></div>
+				 					<div class="plate-content" id="right-reportForm-2">
+				 						<div class="report-container" style="width: 95%">
+			 								<ul class="ctn-1">
+										 		<li style="width: 26%">
+										 			<div>全年粮食种植<span class="green" >469.91</span>万亩</div>
+										 		</li>
+										 		<li style="width: 43%">
+										 			<div style="margin-top: 11px;">粮食总产量实现<span style="font-size: 24px;color:#ff8a00">八连增</span></div>
+										 		</li>
+										 	</ul>
+										 	<div style="width: 100%;height: calc(100% - 71px - 30px);">
+										 		<div class="report-1" style="float: left;height: 100%;width: 50%">
+										 			
+										 		</div>
+										 		<div class="report-2" style="position:relative;float: left;height: 100%;width: 50%">	
+										 			<div class="left-num">
+										 				<div>增长<i></i>2.43%</div>
+										 				<div>74.36</div>
+										 				<div>万吨</div>
+										 				<div>秋粮</div>
+										 			</div>
+										 			<div class="right-num">
+										 				<div>增长<i></i>3.97%</div>
+										 				<div>40.47</div>
+										 				<div>万吨</div>
+										 				<div>夏粮</div>
+										 			</div>
+										 			<div class="bottom-num">
+										 				<div>粮食</div>
+										 				<div><span style="font-size: 20px;">111.5</span>万吨</div>
+										 			</div>
+										 			<div class="center-num">
+										 				<div>66%</div>
+										 				<div>34%</div>
+										 			</div>
+										 		</div>
+										 	</div>
+				 						</div>
+				 					</div>
+				 				</div>
+			 				</div>
+
+			 		</div>
+			 		<div style="height: 304px;width: 1166px;">
+			 				
+			 				<div style="float: left;width: 500px;height: 100%;">
+			 					
+			 					<div class="plate">
+				 					<div class="plate-title"><span>地区人均收入增速</span></div>
+				 					<div class="plate-content" id="right-reportForm-4">
+				 						<div class="report-container">
+										 	<div style="width: 100%;height: 100%;">
+										 		<div class="report" style="float: left;height: 100%;width: 100%">
+										 			
+										 		</div>
+										 	</div>
+				 						</div>
+
+				 					</div>
+				 				</div>
+
+			 				</div>
+
+			 				<div style="float: left;width: 665px;height: 100%;">
+			 						
+								<div class="plate">
+				 					<div class="plate-title"><span>消费品零售总额增速</span></div>
+				 					<div class="plate-content" id="right-reportForm-5">
+				 						<div class="report-container">
+										 	<div style="width: 100%;height: 100%;">
+										 		<div class="report" style="float: left;height: 100%;width: 100%">
+										 			
+										 		</div>
+										 	</div>
+				 						</div>
+
+				 					</div>
+				 				</div>
+			 				</div>
+			 		</div>
+			 		
+			 </div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	
+</script>
+</html>

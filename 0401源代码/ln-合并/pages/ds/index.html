@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8" />
+
+		<link rel="stylesheet" type="text/css" href="./css/ds-index.css">
+		<script type="text/javascript" src="./js/jquery.js"></script>
+		<script type="text/javascript" src="./js/echarts.js"></script>
+		<script type="text/javascript" src="./js/china.js"></script>
+		<script type="text/javascript" src="./js/longnan.js"></script>
+		<script type="text/javascript" src="./js/ds-index.js"></script>
+	</head>
+	<body>
+		<div class="container" style="display: none">
+			<div class="top">
+				<div class="lt-ctan">
+					<div class="lt-1">
+						<div class="title">电商发展</div>
+						<div class="lt-1-l">
+							<div class="lt-1l1">
+			 					<div class="dev_time">
+			 						<div class="dev_content">
+			 							<div>2015</div>
+			 							<div class="lt-1l1-active">2016</div>
+			 							<div>2017Q1</div>
+			 							<div>2015</div>
+			 							<div>2016</div>
+			 							<div>2017Q1</div>
+			 						</div>
+			 					</div>
+			 					
+			 				</div>
+			 				<div class="lt-1l2">
+			 					<div class="ltwo_txt">
+			 						<div class="txt_even"><span>线</span><span>上</span><span>交易额</span></div>
+			 						<div class="txt_odd"><span>650.00</span><span>亿元</span></div>
+			 						<div class="txt_even"><span>线</span><span>下</span><span>交易额</span></div>
+			 						<div class="txt_odd"><span>650.00</span><span>亿元</span></div>
+			 					</div>
+			 				</div>
+						</div>
+						<div class="lt-1-2"></div>
+					</div>
+					<div class="lt-2">
+						<div class="lt-2-l">
+							<div class="title">物流发展情况</div>
+							<div class="lt-2-l-chart"></div>
+						</div>
+						<div class="lt-2-r">
+							<div class="title">电商就业</div>
+							<div class="lt-2-r-chart">
+								<div class="max_cir">
+			 						<div><span class="num">7954</span><br/><span class="text">全市网店数量</span></div>
+			 						<div class="med_cir">
+			 							<div><span class="num">6260</span><br/><span class="text">实际网店</span></div>
+			 							<div class="min_cir">
+			 								<div><span class="num">735</span><br/><span class="text">试点村</span></div>
+			 							</div>
+			 						</div>
+			 					</div>
+			 					<div class="line_one"></div>
+			 					<div class="line_one_txt"><span>就业</span><span class="num_sty1">3.51</span><span>万人</span><br/><span>累计销售</span><span class="num_sty2">20.7</span><span>亿元</span></div>
+			 					<div class="line_two"></div>
+			 					<div class="line_two_txt"><span>就业</span><span class="num_sty1">9.7</span><span>万人</span><br/><span>累计销售</span><span class="num_sty2">2.53</span><span>亿元</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="lt-3">
+						<div class="title">各区域电商交易额</div>
+						<div class="lt-3-chart"></div>
+					</div>
+				</div>
+				<div class="md-ctan">
+					<div id="rippleBg"></div>
+					<div id="map"></div>
+					<div class="mapLegendlayer">
+					</div>
+					<div class="mapLegend">
+						<div>物流输出前三排名</div>
+						<div><div>1</div><div>成都</div></div>
+						<div><div>2</div><div>西安</div></div>
+						<div><div>3</div><div>长沙</div></div>
+					</div>
+				</div>
+				<div class="rt-ctan">
+					<div class="rt-1">
+						<div class="title">电商扶贫</div>
+						<div class="rt-1-box">
+							<div class="rt-1-1">
+								<div class="rt-1-1-chart"></div>
+								<div class="rt-1-1-txt">
+									<span>贫困人口&nbsp;</span><span>36.9</span><span>&nbsp;万人</span>
+								</div>
+							</div>
+							<div class="rt-1-2">
+								<div class="rt-1-2-txt"><span>贫困人口减少</span><br/><span>42.7</span></div>
+							</div>
+							<div class="rt-1-3">
+								<div class="rt-1-3-1"><span>26.04</span><span>%</span></div>
+								<div class="rt-1-3-2"><span>14.86</span><span>%</span></div>
+								<div class="rt-1-3-3"><span>贫困发生率下降</span><span>12</span><span>%</span></div>
+							</div>
+							<div class="rt-1-4">
+								<div class="rt-1-4-1box">
+									<div class="rt-1-4-1"><span>电商产业链<br/>就业岗位</span><br/><span>5.7</span><span>万人</span></div>
+								</div>
+								<div class="rt-1-4-2box">
+									<div class="rt-1-4-2"><span>贫困人口<br/>就业</span><br/><span>1.4</span><span>万人</span></div>
+								</div>
+		 						
+							</div>
+						</div>
+					</div>
+					<div class="rt-2">
+						<div class="rt-2-top">
+							<div class="title">农民人均可支配收入增长</div>
+							<div class="rt-2-top-txt">
+								<div class="rt-2-top-txt-1"><span>43.3%</span><br/><span>电商贡献率</span></div>
+								<div class="rt-2-top-txt-2"><span>增长</span><br/><span>40%</span></div>
+								<div class="rt-2-top-txt-3"><span>6108</span><span>元</span></div>
+								<div class="rt-2-top-txt-4"><span>4345</span><span>元</span></div>
+							</div>
+						</div>
+						<div class="rt-2-bot">
+							<div class="title">网络覆盖率</div>
+							<div class="rt-2-bot-chart"></div>
+						</div>
+					</div>
+					<div class="rt-3">
+						<div class="title">网店数量发展</div>
+						<div class="rt-3-map">
+							<div class="rt-3-map-l">
+								<div class="rt-3-map-l-1">
+									<div class="time_box">
+										<div class="time_content">
+											<div class="sty_one">2014</div>
+											<div class="sty_two">2015</div>
+											<div class="sty_thr">2016</div>
+											<div class="sty_one">2017</div>
+											<div class="sty_one">2014</div>
+											<div class="sty_one">2015</div>
+											<div class="sty_one">2016</div>
+											<div class="sty_one">2017</div>
+										</div>
+									</div>
+								</div>
+								<div class="rt-3-map-l-2">
+									<div>
+										<div>
+											<div class="topH"></div>
+											<div class="bottomH"></div>
+										</div>
+										<div>网店数量</div>
+										<div>
+											<span>230</span>
+											<span>个</span>
+										</div>
+									</div>
+									<div>
+										<div>
+											<div class="topH"></div>
+											<div class="bottomH"></div>
+										</div>
+										<div>有业绩网店数</div>
+										<div>
+											<span>792</span>
+											<span>个</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="rt-3-map-r">
+								<div id="rt-3-map-r"></div>
+								<div class="river-bac"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bottom">
+				<div class="footer-nav">
+		 			<div class="nav-list">
+		 				<div class="std">
+		 					<a href='../../index.html'>概览</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>扶贫攻坚</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>生态文明</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="../cy/index.html">产业培育</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>城乡一体</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>硬件实施</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>民生</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>执政</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="../ds/index.html">电子商务</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>金融</a>
+		 				</div>
+		 				<div class="nml">
+		 					<a href="../ly/index.html">旅游</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>人大政协</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>党群建设</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>安全生产</a>
+		 				</div>
+		 				<div class="disable">
+		 					<a>文化建设</a>
+		 				</div>
+		 			</div>
+		 		</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/echarts.js"></script>
+	<script type="text/javascript" src="../../js/echarts-gl.js"></script>
+	<script type="text/javascript" src="../../js/d3.js"></script>
+	<script type="text/javascript" src="../../assets/esl.js"></script>
+	<script type="text/javascript">
+		require.config({
+            packages: [
+                {
+                    name: 'zrender',
+                    location: '../../assets/zr',
+                    main: 'zrender'
+                }
+            ]
+        });
+	</script>
+</head>
+<body>
+	<div style="position: absolute;left: 0;top: 0">521212</div>
+    <div id="map" style="width: 800px;height: 800px;border:1px solid black;position: absolute;left: 0;top: 0"></div>
+</body>
+
+<script type="text/javascript">
+	 
+	 (function() {
+	 	
+	 	$.get("../../json/621200.json").done(function (longnan) {
+			 
+			echarts.registerMap("陇南0",(typeof longnan == "string" ? $.parseJSON(longnan):longnan));
+
+			var chart = echarts.init($("#map").get(0));
+
+			var options = {
+				series:[{
+					type:"map3D",
+					map:"陇南0",
+					groundPlane:{
+						show:true,
+						color:"rgba(0,0,0,0)"
+					},
+					label:{
+						show:true,
+						textStyle:{
+							color:"white",
+							fontWeight:"100",
+							fontSize:14
+						}
+					},
+					itemStyle:{
+						areaColor:"#28A3DC", //#2195cc
+						borderWidth:"1",
+						borderColor:"white",
+						
+					},
+					emphasis:{
+						itemStyle:{
+							areaColor:"#28A3DC"
+						}
+					},
+					shading:"realistic",
+					light:{
+						main:{
+							color:"#ffffff"
+						},
+						ambient:{
+							color:"#ffffff"
+						}
+					}
+				}]
+			};
+
+			chart.setOption(options);
+
+	 	});
+
+	 })();
+
+</script>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/echarts.js"></script>
+	<script type="text/javascript" src="../../js/echarts-gl.js"></script>
+	<script type="text/javascript" src="../../js/d3.js"></script>
+	<script type="text/javascript" src="../../assets/esl.js"></script>
+	<script type="text/javascript">
+		require.config({
+            packages: [
+                {
+                    name: 'zrender',
+                    location: '../../assets/zr',
+                    main: 'zrender'
+                }
+            ]
+        });
+	</script>
+</head>
+<body style="background: black">
+	
+    <div id="main" style="width: 1000px;height: 700px;border:1px solid black;position: absolute;left: 0;top: 0"></div>
+
+
+    <div id="pie" style="width: 300px; height: 300px;"></div>
+    
+</body>
+
+<script type="text/javascript">
+
+	 
+	 (function() {
+	 	
+	 	var width = 1000, height = 800;
+
+	 	require.config({
+            packages: [
+                {
+                    name: 'zrender',
+                    location: '../../assets/zr',
+                    main: 'zrender'
+                }
+            ]
+        });
+
+		require([
+			"zrender",
+			'zrender/tool/color',
+			"zrender/shape/ShapeBundle",
+			"zrender/Group",
+			"zrender/animation/Animation",
+			'zrender/shape/Text',
+			"zrender/shape/Polygon",
+			"zrender/shape/Path",
+			"zrender/shape/Ring",
+			"zrender/shape/Sector",
+			"zrender/shape/Circle",
+			"zrender/tool/color",
+			"zrender/shape/Polyline"
+		],function(
+			zrender,
+			color,
+			ShapeBundle,
+			Group,
+			Animation,
+			Text,
+			Polygon,
+			Path,
+			Ring,
+			Sector,
+			Circle,
+			zrColor,
+			Polyline
+		) {
+			
+			var zr = zrender.init(document.getElementById("main"));
+
+			zr.clear();
+
+			histogram3D({
+				data:[{name:"产值",value:"248万元",color:"#288491",textColor:"#ffffff"},
+					  {name:"产量",value:"48万斤",color:"#e5800c",textColor:"#ffffff"}],
+				title:"柿子",
+				textColor:"#ffffff",
+				x:100,
+				y:100
+			});
+
+			createCharts$2({
+				x:300,
+				y:20,
+				r:100,
+				height:200,
+				color:"#ff8a00",
+				labelX:"核桃",
+				labelY:"52.5万亩"
+			});
+
+			nestedPieGraph({
+				data:[
+					{
+						name :"新增规上工业企业",value:1419,color:"#ffa901",textColor:"#ffffff"
+					},
+					{
+						name:"新培育小微企业",value:1698,color:"#51fba2",textColor:"#ffffff"
+					},
+					{
+						name:"新增企业",value:3198,color:"#43d6e6",textColor:"#ffffff"
+					}
+				],
+				styles:{
+					x:500,
+					y:500,
+					animation:2000
+				}
+			});
+
+			nestedPieGraph2();
+
+			//createCharts$3();
+
+			zr.render();
+
+			//立体柱状图表
+			function histogram3D(options){
+
+				var data  = options.data || [];
+
+				var title = options.title || "";
+
+				var i = 0 ; len = data.length;
+
+				var maxHeight = 100;
+
+				var width = 30 , x = options.x || 0 , y = options.y || 0 ;
+
+				while(i < len){
+
+					createCharts$1({
+						x: x + (i*60),
+						y:y + (maxHeight - maxHeight / (i+1)),
+						width:width,
+						height:maxHeight / (i+1),
+						color:data[i].color,
+						labelX:data[i].name,
+						labelY:data[i].value,
+						textColor:data[i].textColor
+					});
+
+					i++;
+				}
+
+				zr.addShape(new Text({
+			        style: {
+			            text: options.title || "",
+			            x: x + width*len/2 + 16,
+			            y: y + maxHeight + 32 + 5,
+			            brushType : 'fill',
+				        color : options.textColor,
+				        lineWidth : 3,
+				        textFont : 'bold 20px verdana',
+				        textAlign : 'center',
+			        },
+			        hoverable:false
+			    }))
+			}
+
+			/*//创建三个圆
+
+			function createCharts$3() {
+				var shapes = [
+					{style:{x : 600,y : 200,r0 : 0,r :  65,startAngle : 10 + 90,endAngle :  10 + 90 + 180,brushType : 'fill',color  : "rgba(38,123,138,0.7)"},hoverable:false},
+					{style:{x : 600,y : 200,r0 : 0, r :  65,startAngle : 10 + 90 + 180,endAngle : 10 + 90 + 180 + 180, brushType : 'fill',color : "rgba(38,123,138,0.5)"},hoverable:false},
+					{style : {x : 600,y : 200,r :  66,brushType : 'stroke',strokeColor : "rgba(39,125,93,1)",lineWidth : 1},hoverable:false},
+					{style:{x:600,y:200,r:75,brushType : 'stroke',strokeColor:"rgba(38,123,138,1)",lineWidth : 1},hoverable:false},
+					{style:{x:600,y:200,r:84,brushType : 'stroke',strokeColor:"rgba(38,123,138,1)",lineWidth : 1},hoverable:false}
+				];
+				zr.addShape(new Sector(shapes[0]));
+				zr.addShape(new Sector(shapes[1]));
+				zr.addShape(new Circle(shapes[2]));
+				zr.addShape(new Circle(shapes[3]));
+				zr.addShape(new Circle(shapes[4]));
+
+			}*/
+
+			//立体柱状图型
+			function createCharts$1(styles) {
+
+				styles  = styles || {};
+
+				var x = styles.x || 0 , y = styles.y || 0 ;
+
+				var width = styles.width || 50, height = styles.height || 100 ,color = styles.color || "black"; 
+
+				var g = new Group();
+
+				var color = d3.scaleLinear().domain([0,1]).range(["#ffffff",color]).interpolate(d3.interpolateHsl);
+
+				var deg30 = Math.PI / 6;
+
+				var zY = width/2 * Math.sin(deg30);
+				var zX = width/2 * Math.cos(deg30);
+
+				var poly1 = new Polygon({
+					style:{
+						pointList:[[x,y],[x+width,y],[x+width,y+height],[x,y+height]],
+						color:color(1),
+					},
+			        hoverable:false
+				});
+			    var poly2 = new Polygon({
+					style:{
+						pointList:[ [x + width, y ], [x + width + zX ,y - zY], [ x + width + zX ,y + height - zY],[x+width,y+height]],
+						color:color(0.5)
+					},
+			        hoverable:false
+				});
+			    var poly3 = new Polygon({
+					style:{
+						pointList:[[x , y ],[x + zX , y - zY],[x + width + zX, y - zY],[x + width,y]],
+						color:color(1.1)
+					},
+			        hoverable:false
+				});
+
+				var textX = new Text({
+			        style: {
+			            text: styles.labelX || "",
+			            x: x + width/2,
+			            y: y+height + 16,
+			            textAlign:"center",
+			            textFont: '16px Arial',
+			            color:styles.textColor
+			        },
+			        hoverable:false
+			    });
+
+			    var textY = new Text({
+			        style: {
+			            text: styles.labelY || "",
+			            x: x + width/2,
+			            y: y - 16,
+			            textAlign:"center",
+			            textFont: '16px Arial',
+			            color:styles.textColor
+			        },
+			        hoverable:false
+			    });
+
+			    var dh = 0;
+			    var t = d3.timer(function () {
+
+			    	dh += 1;
+			    	if(dh > height) {
+			    		t.stop();
+			    	}
+			    	zr.modShape(poly1.id,{
+			    	 	style:{
+							pointList:[[x,y + height - dh],[x+width,y + height - dh],[x+width,y+height],[x,y+height]]
+						}
+			    	});
+			    	zr.modShape(poly2.id,{
+			    	 	style:{
+							pointList:[ [x + width, y + height - dh ], [x + width + zX ,y - zY + height - dh], [ x + width + zX ,y + height - zY],[x+width,y+height]]
+						}
+			    	});
+			    	zr.modShape(poly3.id,{
+			    	 	style:{
+							pointList:[[x , y + height - dh ],[x + zX , y + height - dh  - zY],[x + width + zX, y + height - dh  - zY],[x + width,y + height - dh ]]
+						}
+			    	});
+
+			    	zr.modShape(textY.id,{
+			    	 	style:{
+							y: y + height - dh  - 16,
+						}
+			    	});
+
+			    	zr.refresh();
+
+			    });
+
+				g.addChild(poly1);
+				g.addChild(poly2);
+				g.addChild(poly3);
+				g.addChild(textX);
+				g.addChild(textY);
+				zr.addShape(g);
+
+			}
+
+			//锥形图形
+			function createCharts$2(styles){
+
+				styles  = styles || {};
+
+				var x = styles.x || 0 , y = styles.y || 0 ;
+
+				var r = styles.r || 100, height = styles.height || 100 ,color = styles.color || "black"; 
+
+				var g = new Group();
+
+				var color = d3.scaleLinear().domain([0,1]).range(["#ffffff",color]).interpolate(d3.interpolateHsl);
+
+				var path1 = d3.path();
+				path1.moveTo(x,y);
+				path1.lineTo(x,y+height);
+				path1.lineTo(x - r/2,y + height);
+				path1.quadraticCurveTo(x - r / 4 + 10 , y + height / 2 + 10, x, y);
+
+				var shape1 = new Path({
+					style:{
+						path:path1.toString(),
+						color:color(1.1)
+					},
+			        hoverable:false
+				});
+
+				var path2 = d3.path();
+				path2.moveTo(x,y);
+				path2.lineTo(x,y+height);
+				path2.lineTo(x + r/2,y + height);
+				path2.quadraticCurveTo(x + r / 4 - 8 , y + height / 2 + 8, x, y);
+				
+				var shape2 = new Path({
+					style:{
+						path:path2.toString(),
+						color:color(1)
+					},
+			        hoverable:false
+				});
+
+				var textX = new Text({
+			        style: {
+			            text: styles.labelX || "",
+			            x: x,
+			            y: y + height + 16,
+			            textAlign:"center",
+			            textFont: '16px Arial',
+
+			        },
+			        hoverable:false
+			    });
+
+			    var textY = new Text({
+			        style: {
+			            text: styles.labelY || "",
+			            x: x,
+			            y: y - 16,
+			            textAlign:"center",
+			            textFont: '16px Arial'
+			        },
+			        hoverable:false
+			    });
+
+
+			    var dh = 0;
+
+			    var delta = d3.scaleLinear().domain([0,height]).range([0,8]);
+
+			    var t = d3.timer(function () {
+
+			    	dh += 1;
+
+			    	if(dh > height) {
+			    		t.stop();
+			    	}
+			    	//var delta = dh / 2 > 8 ? 8 : 0;
+			    	var path1 = d3.path();
+					path1.moveTo(x,y + height - dh);
+					path1.lineTo(x,y + height);
+					path1.lineTo(x - r/2,y + height);
+					path1.quadraticCurveTo(x - r / 4 + 10 , y + height - dh/ 2 + delta(dh), x, y + height - dh);
+			    	
+			    	var path2 = d3.path();
+					path2.moveTo(x, y + height - dh);
+					path2.lineTo(x, y+height);
+					path2.lineTo(x + r/2,y + height);
+					path2.quadraticCurveTo(x + r / 4 - 8 , y + height - dh / 2 + delta(dh), x, y + height - dh);
+
+					if(shape1.style && shape1.style.pathArray){
+						shape1.style.pathArray = null;
+					}
+					if(shape2.style && shape2.style.pathArray){
+						shape2.style.pathArray = null;
+					}
+
+					zr.modShape(shape1.id,{
+			    	 	style:{
+							path:path1.toString()
+						}
+			    	});
+			    	zr.modShape(shape2.id,{
+			    	 	style:{
+							path:path2.toString()
+						}
+			    	});
+
+			    	zr.modShape(textY.id,{
+			    	 	style:{
+							y: y + height - dh  - 16,
+						}
+			    	});
+
+			    	zr.refresh();
+
+			    });
+
+				g.addChild(shape1);
+				g.addChild(shape2);
+				g.addChild(textX);
+				g.addChild(textY);
+				zr.addShape(g);
+
+			}
+
+			//嵌套饼图
+			function nestedPieGraph(options){
+
+				options = options || {};
+
+				options.styles = options.styles || {};
+
+				var dr = options.styles.dr || 20, // 每个圆半径大小 
+				    x = options.styles.x || 0, 
+				    y = options.styles.y || 0, 
+				    ir = options.styles.ir || 50; // 空心圆半径
+
+				var g = new Group();
+
+				var data = options.data || [];
+
+				var rDr0 = [0],
+					r,  //外圈半径
+				    r0, //内圈半径;
+				    sa, //开始角
+				    ea,
+				    getValue; //结束角
+
+			    var maxValue = d3.max(data,function(d){return d.value});
+				var getValue = d3.scaleLinear().range([90,270 + 45]).domain([0,maxValue]);
+
+				var shapes = [];
+
+				for(var i = 0 ; i < data.length ; i ++){
+
+					r0 = ir + dr * (i) + 3 * i;
+					r  = ir + dr * (i+1) + 3 * i;
+
+					r0 += (i > 0 ? rDr0[i-1] : 0);
+					r  += (i > 0 ? rDr0[i] + rDr0[i-1]: 0);
+
+					rDr0.push( (r-r0)/3 );
+
+					shapes.push(new Sector({
+					    style : {
+					        x : x,
+					        y : y,
+					        r0 : r0,
+					        r :  r,
+					        startAngle : 90,
+		        			endAngle : getValue(data[i].value),
+					        brushType : 'fill',
+					        color : data[i].color || "black",
+					    },
+					    hoverable:false
+					}));
+					shapes.push(new Text({
+				        style: {
+				            text: data[i].name,
+				            x: x + 10,
+				            y: y - ( r - ( r - r0 )/2),
+				            textFont: 'bold 16px Arial',
+				            color:data[i].textColor
+				        },
+				        hoverable:false
+				    }));
+
+				};
+
+			  	var len = shapes.length;
+			  	var ans = {};
+			  	while(len -- ){
+			  		zr.addShape(shapes[len]);
+			  		if(len % 2 == 0){
+			  			ans[shapes[len].id] = d3.scaleLinear().domain([0,1]).range([90,shapes[len].style.endAngle]);
+			  		}
+			  	}
+
+		  		d3.transition()
+			  	    .duration(options.styles.animation || 1000)
+			  	    .tween(null,function () {
+			  	  	    return function (t) {
+			  	  	  	    len = shapes.length;
+				  	  	  	while(len -- ){
+				  	  	  		if(len % 2 == 0){
+				  	  	  			zr.modShape(shapes[len].id,{
+				  	  	  				style:{
+				  	  	  					endAngle:ans[shapes[len].id](t)
+				  	  	  				}
+						  			});
+				  	  	  		}
+						  	}
+					  	    zr.refresh();
+			  	  	    }
+			  	    });
+			}
+
+			//嵌套饼图2
+
+			function nestedPieGraph2(options) {
+
+				var width = 500,height = 500;
+				
+				var x = width/2 + 400, y = height /2 - 50;
+
+				var r0 = 30 , r = 70;
+
+				var data_out = [
+					{name:'第一产业',value:30.31},
+					{name:'第二产业',value:32.93},
+					{name:'第三产业',value:171.89}
+				];
+				//增速的占比
+				var data_inner = [
+					{name:'第一产业',value:6.0},
+					{name:'第二产业',value:9.9},
+					{name:'第三产业',value:10.8}
+				];
+
+				var colors = ["#51fba2","#43d6e6","#ffa901"];
+				var i = 0 ;
+				var sumi = d3.sum(data_inner,function(d){return d.value}); 
+				var sumo = d3.sum(data_out,function(d){return d.value});
+
+				var angle = d3.scaleLinear().domain([0,sumi]).range([0, 360 ]);
+
+				var shapes = [];
+				var stack = -90;
+				var startAngle,endAngle;
+				while (i < data_inner.length){
+					startAngle = stack;
+					stack += angle(data_inner[i].value);
+					endAngle = stack;
+					shapes.push(new Sector({
+					    style : {
+					        x : x,
+					        y : y,
+					        r0 : r0,
+					        r :  r,
+					        clockWise:true,
+					        startAngle : startAngle ,
+		        			endAngle   : endAngle,
+					        brushType : 'fill',
+					        color : colors[i] || "black"
+					    },
+					    hoverable:false
+					}));
+
+					shapes.push(new Text({
+						style: {
+				            text: data_inner[i].name,
+				            x: x + 200,
+				            y: 60 + 100 * i,
+				            textFont: '16px Arial',
+				            color:colors[i]
+				        }
+					}));
+					shapes.push(new Text({
+						style: {
+				            text: data_out[i].value + "亿元",
+				            x: x + 200,
+				            y: 60 + 100 * i + 20 + 10,
+				            textFont: 'bold 16px Arial',
+				            color:colors[i]
+				        }
+					}));
+
+					shapes.push(new Text({
+						style: {
+				            text: "↑" + data_inner[i].value + "%",
+				            x: x + 200,
+				            y: 60 + 100 * i + 20 + 20 + 15,
+				            textFont: 'bold 16px Arial',
+				            color:colors[i]
+				        }
+					}));
+
+					i ++;
+				}
+
+				var jx = 3;
+				var angle1 = d3.scaleLinear().domain([0,sumo]).range([0, 360-  (data_out.length-1)*jx]);
+				var dr = r - r0;
+				i = 0;
+				stack = -90;
+				r0 = r + 5;
+				r  = r0 + dr;
+				var attendValue = 0;//衰减值
+
+				while (i < data_out.length){
+					startAngle = stack;
+					stack += angle1(data_out[i].value);
+					endAngle = stack;
+					shapes.push(new Sector({
+					    style : {
+					        x : x,
+					        y : y,
+					        r0 : r0 + attendValue/2,
+					        r :  r - attendValue/2,
+					        clockWise:true,
+					        startAngle : startAngle + jx*i,
+		        			endAngle   : endAngle + jx*i + (i == data_out.length -1 ? -jx : 0),
+					        brushType : 'fill',
+					        color : colors[i] || "black",
+					        text:data_out[i].name,
+					        textPosition:"inside"
+					    },
+					    hoverable:false
+					}));
+					attendValue = (r - r0 + attendValue)*2/5;
+
+					var pointList;
+					var sx,sy;
+					if(startAngle < 90 && endAngle > 90){
+						sx = x + (r - attendValue/2)*Math.cos(Math.PI * -(startAngle + (90-startAngle)/2)/180);
+						sy = y - (r - attendValue/2)*Math.sin(Math.PI * -(startAngle + (90-startAngle)/2)/180);
+						pointList = [[sx, sy],[sx + 20,30 + 60 + 100 * i],[x + 200, 30 + 60 + 100 * i]];
+					}else if(startAngle < 90 && endAngle < 90){
+						sx = x + (r - attendValue/2)*Math.cos(Math.PI * -(startAngle + (endAngle-startAngle)/2)/180);
+						sy = y - (r - attendValue/2)*Math.sin(Math.PI * -(startAngle + (endAngle-startAngle)/2)/180);
+						pointList = [[sx, sy],[sx + 20,30 + 60 + 100 * i],[x + 200, 30 + 60 + 100 * i]];
+					}else if(startAngle > 90 && endAngle > 90){
+
+					}
+
+					shapes.push(new Polyline({
+				        style: {
+				            pointList: pointList,
+				            strokeColor: colors[i],
+				            smooth:"",
+				            lineWidth:1
+				        },
+				        hoverable:false
+				    }))
+					i ++;
+				}
+
+				i = 0;
+				while ( i < shapes.length){
+					zr.addShape(shapes[i]);
+					i++;
+				}
+				
+			}
+
+
+		});
+
+	 }());
+
+</script>
+</html>
